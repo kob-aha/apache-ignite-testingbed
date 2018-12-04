@@ -61,12 +61,7 @@ public class IgniteApp1 extends IgniteAppBase {
             String truststorePath = Paths.get(truststoreURL.toURI()).toString();
             char[] trustStorePwd = System.getenv(STOREPASS_KEY).toCharArray();
 
-            SslContextFactory sslContextFactory = new SslContextFactory();
-            sslContextFactory.setKeyStoreFilePath(keystorePath);
-            sslContextFactory.setKeyStorePassword(trustStorePwd);
-            sslContextFactory.setTrustStoreFilePath(truststorePath);
-            sslContextFactory.setTrustStorePassword(trustStorePwd);
-
+            SslContextFactory sslContextFactory = getSslContextFactory(keystorePath, truststorePath, trustStorePwd);
             return sslContextFactory;
         }
 

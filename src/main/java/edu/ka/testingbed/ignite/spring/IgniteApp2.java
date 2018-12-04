@@ -7,6 +7,7 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.ssl.SslContextFactory;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -64,11 +65,7 @@ public class IgniteApp2 extends IgniteAppBase {
             String truststorePath = Paths.get(truststoreURL.toURI()).toString();
             char[] trustStorePwd = System.getenv(STOREPASS_KEY).toCharArray();
 
-            SslContextFactory sslContextFactory = new SslContextFactory();
-            sslContextFactory.setKeyStoreFilePath(keystorePath);
-            sslContextFactory.setKeyStorePassword(trustStorePwd);
-            sslContextFactory.setTrustStoreFilePath(truststorePath);
-            sslContextFactory.setTrustStorePassword(trustStorePwd);
+            SslContextFactory sslContextFactory = getSslContextFactory(keystorePath, truststorePath, trustStorePwd);
 
             return sslContextFactory;
         }
