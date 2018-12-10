@@ -1,7 +1,6 @@
-package edu.ka.testingbed.ignite.spring;
+package edu.ka.testingbed.ignite.app;
 
 import edu.ka.testingbed.ignite.spring.config.BaseSpringConfig;
-import edu.ka.testingbed.ignite.spring.config.SpringDataConfig;
 import edu.ka.testingbed.ignite.spring.repository.EmployeeRepository;
 import org.apache.ignite.Ignite;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

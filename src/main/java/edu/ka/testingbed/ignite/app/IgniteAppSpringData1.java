@@ -1,8 +1,7 @@
-package edu.ka.testingbed.ignite.spring;
+package edu.ka.testingbed.ignite.app;
 
-import edu.ka.testingbed.ignite.model.EmployeeDTO;
-import edu.ka.testingbed.ignite.spring.config.MongoStoreConfig;
 import edu.ka.testingbed.ignite.spring.config.SpringDataConfig;
+import edu.ka.testingbed.ignite.model.EmployeeDTO;
 import edu.ka.testingbed.ignite.spring.repository.EmployeeRepository;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
@@ -14,13 +13,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-public class IgniteAppMongo extends IgniteAppBase {
+public class IgniteAppSpringData1 extends IgniteAppBase {
 
-    public IgniteAppMongo(Ignite ignite) {
-        super(null, ignite);
-    }
-
-    public IgniteAppMongo(EmployeeRepository repository, Ignite ignite) {
+    public IgniteAppSpringData1(EmployeeRepository repository, Ignite ignite) {
         super(repository, ignite);
     }
 
@@ -30,24 +25,12 @@ public class IgniteAppMongo extends IgniteAppBase {
         employeeDTO.setName("John");
         employeeDTO.setEmployed(true);
 
-//        repository.save(employeeDTO.getId(), employeeDTO);
-//
-//        repository.getEmployeeDTOById(employeeDTO.getId());
-
-//        try {
-//            Thread.sleep(TimeUnit.SECONDS.toMillis(5l));
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        repository.save(employeeDTO.getId(), employeeDTO);
 
         IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("baeldungCache");
-        cache.put(employeeDTO.getId(), employeeDTO);
-//        EmployeeDTO employeeDTOFromCache = cache.get(2);
 
         EmployeeDTO cacheReadEntry = cache.get(2);
         System.out.println("Read entry from cache. Value is: " + cacheReadEntry);
-
-//        System.out.println("Value from cache is: " + employeeDTOFromCache);
     }
 
     public static void main (String[] args) {
@@ -55,7 +38,7 @@ public class IgniteAppMongo extends IgniteAppBase {
         IgniteAppBase.runApplication(InstanceConfig.class);
     }
 
-    private static class InstanceConfig extends MongoStoreConfig {
+    private static class InstanceConfig extends SpringDataConfig {
 
         @Override
         protected void customizeIgniteConfiguration(IgniteConfiguration igniteConfiguration) throws URISyntaxException {
@@ -74,8 +57,8 @@ public class IgniteAppMongo extends IgniteAppBase {
         }
 
         @Bean
-        public IgniteAppBase app(Ignite ignite) {
-            return new IgniteAppMongo(ignite);
+        public IgniteAppBase app(EmployeeRepository repository, Ignite ignite) {
+            return new IgniteAppSpringData1(repository, ignite);
         }
     }
 }

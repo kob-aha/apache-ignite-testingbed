@@ -1,22 +1,15 @@
 package edu.ka.testingbed.ignite.spring.config;
 
 import edu.ka.testingbed.ignite.model.EmployeeDTO;
-import edu.ka.testingbed.ignite.spring.repository.EmployeeRepository;
-import edu.ka.testingbed.ignite.store.CacheMongoStore;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.Ignition;
+import org.apache.ignite.IgniteSpringBean;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.springdata.repository.config.EnableIgniteRepositories;
 import org.apache.ignite.ssl.SslContextFactory;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import javax.cache.configuration.Factory;
-import javax.cache.configuration.FactoryBuilder;
 import java.net.URISyntaxException;
 
 import static org.apache.ignite.events.EventType.EVTS_CACHE;
@@ -25,20 +18,26 @@ import static org.apache.ignite.events.EventType.EVTS_CACHE;
 public abstract class BaseSpringConfig {
 
     @Bean
-    public Ignite igniteInstance() throws URISyntaxException {
+    public Ignite igniteInstance(IgniteConfiguration configuration) {
+        IgniteSpringBean ignite = new IgniteSpringBean();
+        ignite.setConfiguration(configuration);
+        return ignite;
+    }
+
+    @Bean
+    private IgniteConfiguration igniteConfiguration(CacheConfiguration... cacheConfigurations) throws URISyntaxException {
         IgniteConfiguration config = new IgniteConfiguration();
         config.setIncludeEventTypes(EVTS_CACHE);
 
-        CacheConfiguration cache = getEmployeeCacheConfiguration();
-        config.setCacheConfiguration(cache);
+        config.setCacheConfiguration(cacheConfigurations);
 
         customizeIgniteConfiguration(config);
 
-        return Ignition.start(config);
+        return config;
     }
 
-    @NotNull
-    protected CacheConfiguration getEmployeeCacheConfiguration() {
+    @Bean
+    public CacheConfiguration employeeCacheConfiguration() {
         CacheConfiguration cache = new CacheConfiguration("baeldungCache");
         cache.setCacheMode(CacheMode.REPLICATED);
         cache.setIndexedTypes(Integer.class, EmployeeDTO.class);

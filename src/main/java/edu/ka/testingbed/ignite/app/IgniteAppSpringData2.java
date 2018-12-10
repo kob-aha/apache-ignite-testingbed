@@ -1,4 +1,4 @@
-package edu.ka.testingbed.ignite.spring;
+package edu.ka.testingbed.ignite.app;
 
 import edu.ka.testingbed.ignite.spring.config.SpringDataConfig;
 import edu.ka.testingbed.ignite.model.EmployeeDTO;
@@ -18,10 +18,10 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-public class IgniteApp2 extends IgniteAppBase {
+public class IgniteAppSpringData2 extends IgniteAppBase {
 
 
-    public IgniteApp2(EmployeeRepository repository, Ignite ignite) {
+    public IgniteAppSpringData2(EmployeeRepository repository, Ignite ignite) {
         super(repository, ignite);
     }
 
@@ -90,7 +90,7 @@ public class IgniteApp2 extends IgniteAppBase {
 
         @Bean
         public IgniteAppBase app(EmployeeRepository repository, Ignite ignite) {
-            return new IgniteApp2(repository, ignite);
+            return new IgniteAppSpringData2(repository, ignite);
         }
     }
 }
