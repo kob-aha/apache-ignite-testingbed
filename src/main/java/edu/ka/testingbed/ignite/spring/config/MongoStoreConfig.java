@@ -10,7 +10,10 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import edu.ka.testingbed.ignite.model.EmployeeDTO;
 import edu.ka.testingbed.ignite.store.CacheMongoStore;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteSpringBean;
 import org.apache.ignite.configuration.CacheConfiguration;
+import org.apache.ignite.configuration.IgniteConfiguration;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +28,14 @@ import java.util.Set;
 public abstract class MongoStoreConfig extends BaseSpringConfig {
 
     private static final int MONGOD_PORT = 27001;
+
+    @Override
+    public Ignite igniteInstance(IgniteConfiguration configuration) {
+        IgniteSpringBean ignite = new IgniteSpringBean();
+
+        ignite.setConfiguration(configuration);
+        return ignite;
+    }
 
     @Bean(destroyMethod = "stop")
     protected MongodExecutable mongodExecutable() throws IOException {

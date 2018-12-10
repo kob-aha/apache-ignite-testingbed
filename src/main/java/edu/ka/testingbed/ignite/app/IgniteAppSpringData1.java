@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 public class IgniteAppSpringData1 extends IgniteAppBase {
 
@@ -27,10 +28,16 @@ public class IgniteAppSpringData1 extends IgniteAppBase {
 
         repository.save(employeeDTO.getId(), employeeDTO);
 
-        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("baeldungCache");
+        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("cache");
+
+        try {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5l));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         EmployeeDTO cacheReadEntry = cache.get(2);
-        System.out.println("Read entry from cache. Value is: " + cacheReadEntry);
+        System.out.println("Read entry entered by 2nd node. Value is: " + cacheReadEntry);
     }
 
     public static void main (String[] args) {

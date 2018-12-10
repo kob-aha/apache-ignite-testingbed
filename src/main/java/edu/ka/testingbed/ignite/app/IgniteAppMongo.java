@@ -26,17 +26,13 @@ public class IgniteAppMongo extends IgniteAppBase {
         super(null, ignite);
     }
 
-    public IgniteAppMongo(EmployeeRepository repository, Ignite ignite) {
-        super(repository, ignite);
-    }
-
     public void doRunApplication() {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(1);
         employeeDTO.setName("John");
         employeeDTO.setEmployed(true);
 
-        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("baeldungCache");
+        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("cache");
         cache.put(employeeDTO.getId(), employeeDTO);
 
         Query<EmployeeDTO> employeeDTOQuery = morphiaDatastore.find(EmployeeDTO.class);

@@ -18,11 +18,7 @@ import static org.apache.ignite.events.EventType.EVTS_CACHE;
 public abstract class BaseSpringConfig {
 
     @Bean
-    public Ignite igniteInstance(IgniteConfiguration configuration) {
-        IgniteSpringBean ignite = new IgniteSpringBean();
-        ignite.setConfiguration(configuration);
-        return ignite;
-    }
+    public abstract Ignite igniteInstance(IgniteConfiguration configuration);
 
     @Bean
     private IgniteConfiguration igniteConfiguration(CacheConfiguration... cacheConfigurations) throws URISyntaxException {
@@ -38,7 +34,7 @@ public abstract class BaseSpringConfig {
 
     @Bean
     public CacheConfiguration employeeCacheConfiguration() {
-        CacheConfiguration cache = new CacheConfiguration("baeldungCache");
+        CacheConfiguration cache = new CacheConfiguration("cache");
         cache.setCacheMode(CacheMode.REPLICATED);
         cache.setIndexedTypes(Integer.class, EmployeeDTO.class);
 

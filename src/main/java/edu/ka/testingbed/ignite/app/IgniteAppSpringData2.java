@@ -42,10 +42,10 @@ public class IgniteAppSpringData2 extends IgniteAppBase {
             e.printStackTrace();
         }
 
-        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("baeldungCache");
+        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("cache");
         EmployeeDTO employeeDTOFromCache = cache.get(1);
 
-        System.out.println("Value from cache is: " + employeeDTOFromCache);
+        System.out.println("Reading value entered by 1st node. Value is: " + employeeDTOFromCache);
 
         IgnitePredicate<? extends Event> igniteListener = getIgniteListener();
 
