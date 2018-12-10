@@ -48,7 +48,7 @@ configurations.all {
 }
 
 // Define the main class for the application
-mainClassName = 'edu.ka.testingbed.ignite.App'
+mainClassName = 'edu.ka.testingbed.ignite.spring.IgniteApp1'
 group 'edu.ka.testingbed.ignite'
 version '1.0-SNAPSHOT'
 

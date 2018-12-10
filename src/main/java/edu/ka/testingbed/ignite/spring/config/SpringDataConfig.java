@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.URISyntaxException;
 
+import static org.apache.ignite.events.EventType.*;
+
 @Configuration
 @EnableIgniteRepositories(basePackageClasses = EmployeeRepository.class)
 @ComponentScan(basePackages = "edu.ka.testingbed.ignite.spring.repository")
@@ -24,9 +26,11 @@ public abstract class SpringDataConfig {
     @Bean
     public Ignite igniteInstance() throws URISyntaxException {
         IgniteConfiguration config = new IgniteConfiguration();
+        config.setIncludeEventTypes(EVTS_CACHE);
 
-        CacheConfiguration cache = getCacheConfiguration();
-        config.setCacheConfiguration(cache);
+        CacheConfiguration cache = getEmployeeCacheConfiguration();
+        CacheConfiguration simpleCacheConfiguration = getSimpleCacheConfiguration();
+        config.setCacheConfiguration(cache, simpleCacheConfiguration);
 
         customizeIgniteConfiguration(config);
 
@@ -34,11 +38,19 @@ public abstract class SpringDataConfig {
     }
 
     @NotNull
-    private CacheConfiguration getCacheConfiguration() {
+    private CacheConfiguration getEmployeeCacheConfiguration() {
         CacheConfiguration cache = new CacheConfiguration("baeldungCache");
         cache.setCacheMode(CacheMode.REPLICATED);
 
         cache.setIndexedTypes(Integer.class, EmployeeDTO.class);
+        return cache;
+    }
+
+    private CacheConfiguration getSimpleCacheConfiguration() {
+        CacheConfiguration cache = new CacheConfiguration("simpleCache");
+        cache.setCacheMode(CacheMode.REPLICATED);
+
+        cache.setIndexedTypes(String.class, String.class);
         return cache;
     }
 

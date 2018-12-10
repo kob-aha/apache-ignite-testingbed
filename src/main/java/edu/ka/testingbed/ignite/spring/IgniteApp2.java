@@ -5,7 +5,12 @@ import edu.ka.testingbed.ignite.spring.dto.EmployeeDTO;
 import edu.ka.testingbed.ignite.spring.repository.EmployeeRepository;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.cache.CachePeekMode;
 import org.apache.ignite.configuration.IgniteConfiguration;
+import org.apache.ignite.events.CacheEvent;
+import org.apache.ignite.events.Event;
+import org.apache.ignite.events.EventType;
+import org.apache.ignite.lang.IgnitePredicate;
 import org.apache.ignite.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -44,6 +49,22 @@ public class IgniteApp2 extends IgniteAppBase {
         EmployeeDTO employeeDTOFromCache = cache.get(1);
 
         System.out.println("Value from cache is: " + employeeDTOFromCache);
+
+        IgnitePredicate<? extends Event> igniteListener = getIgniteListener();
+
+        ignite.events().localListen(igniteListener,
+                EventType.EVTS_CACHE);
+    }
+
+    public IgnitePredicate<? extends Event> getIgniteListener() {
+        IgnitePredicate<CacheEvent> eventsListener = evt -> {
+            System.out.println("Received event [evt=" + evt.name() + ", key=" + evt.key() +
+                    ", oldVal=" + evt.oldValue() + ", newVal=" + evt.newValue());
+
+            return true; // Continue listening.
+        };
+
+        return eventsListener;
     }
 
     public static void main (String[] args) {
