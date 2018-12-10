@@ -1,19 +1,16 @@
 package edu.ka.testingbed.ignite.spring;
 
 import edu.ka.testingbed.ignite.spring.config.SpringDataConfig;
-import edu.ka.testingbed.ignite.spring.dto.EmployeeDTO;
+import edu.ka.testingbed.ignite.model.EmployeeDTO;
 import edu.ka.testingbed.ignite.spring.repository.EmployeeRepository;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
-import org.apache.ignite.cache.CachePeekMode;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.events.CacheEvent;
 import org.apache.ignite.events.Event;
 import org.apache.ignite.events.EventType;
 import org.apache.ignite.lang.IgnitePredicate;
 import org.apache.ignite.ssl.SslContextFactory;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.net.URISyntaxException;

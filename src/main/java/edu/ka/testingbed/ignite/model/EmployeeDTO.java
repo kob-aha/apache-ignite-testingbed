@@ -1,11 +1,13 @@
-package edu.ka.testingbed.ignite.spring.dto;
+package edu.ka.testingbed.ignite.model;
 
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
+import org.mongodb.morphia.annotations.Id;
 
 import java.io.Serializable;
 
 public class EmployeeDTO implements Serializable {
 
+    @Id
     @QuerySqlField(index = true)
     private Integer id;
     @QuerySqlField(index = true)
