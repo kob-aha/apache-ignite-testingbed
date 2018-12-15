@@ -4,11 +4,11 @@ import edu.ka.testingbed.ignite.spring.config.SpringDataConfig;
 import edu.ka.testingbed.ignite.model.EmployeeDTO;
 import edu.ka.testingbed.ignite.spring.repository.EmployeeRepository;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCache;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.ssl.SslContextFactory;
 import org.springframework.context.annotation.Bean;
 
+import javax.cache.Cache;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -28,7 +28,7 @@ public class IgniteAppSpringData1 extends IgniteAppBase {
 
         repository.save(employeeDTO.getId(), employeeDTO);
 
-        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("cache");
+        Cache<Integer, EmployeeDTO> cache = cacheContainer.getCache();
 
         try {
             Thread.sleep(TimeUnit.SECONDS.toMillis(5l));

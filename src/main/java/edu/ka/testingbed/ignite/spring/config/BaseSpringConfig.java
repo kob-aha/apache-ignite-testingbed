@@ -1,8 +1,8 @@
 package edu.ka.testingbed.ignite.spring.config;
 
+import edu.ka.testingbed.ignite.CacheContainer;
 import edu.ka.testingbed.ignite.model.EmployeeDTO;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteSpringBean;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
@@ -35,12 +35,19 @@ public abstract class BaseSpringConfig {
     }
 
     @Bean
-    public CacheConfiguration employeeCacheConfiguration() {
+    public CacheConfiguration<Integer, EmployeeDTO> employeeCacheConfiguration() {
         CacheConfiguration cache = new CacheConfiguration("cache");
         cache.setCacheMode(CacheMode.REPLICATED);
         cache.setIndexedTypes(Integer.class, EmployeeDTO.class);
+        cache.setStatisticsEnabled(true);
 
         return cache;
+    }
+
+    @Bean
+    public CacheContainer cacheContainer(CacheConfiguration<Integer, EmployeeDTO> cacheConfiguration) {
+        CacheContainer cacheContainer = new CacheContainer(cacheConfiguration);
+        return cacheContainer;
     }
 
     protected SslContextFactory getSslContextFactory(String keystorePath, String truststorePath, char[] trustStorePwd) {

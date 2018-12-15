@@ -12,6 +12,7 @@ import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import javax.cache.Cache;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -32,7 +33,7 @@ public class IgniteAppMongo extends IgniteAppBase {
         employeeDTO.setName("John");
         employeeDTO.setEmployed(true);
 
-        IgniteCache<Integer, EmployeeDTO> cache = ignite.cache("cache");
+        Cache<Integer, EmployeeDTO> cache = ignite.getOrCreateCache(configuration.getName());
         cache.put(employeeDTO.getId(), employeeDTO);
 
         Query<EmployeeDTO> employeeDTOQuery = morphiaDatastore.find(EmployeeDTO.class);
