@@ -8,6 +8,7 @@ import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.ssl.SslContextFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.net.URISyntaxException;
@@ -15,6 +16,7 @@ import java.net.URISyntaxException;
 import static org.apache.ignite.events.EventType.EVTS_CACHE;
 
 @Configuration
+@ComponentScan(basePackages = "edu.ka.testingbed.ignite.metrics.config")
 public abstract class BaseSpringConfig {
 
     @Bean
